@@ -9,14 +9,14 @@ export type StickyHeaderLayoutProps = {
 
 export const StickyHeaderLayout = ({title, children}: StickyHeaderLayoutProps) => {
   return (
-    <div className=" flex flex-col h-screen overflow-scroll relative bg-slate-400 bg-gradient-to-r from-blue-500 to-blue-700">
+    <div className=" flex flex-col h-screen overflow-scroll relative bg-slate-800">
       <header className="w-screen sticky top-0">
         <div className="text-center p-16">
           <h1 className=" text-5xl font-bold text-white">{title}</h1>
         </div>
         <div className="flex flex-row justify-end space-x-4 p-4">
           <IconButton
-            src="/res/icons/github-mark.svg"
+            src="/res/icons/github-mark-white.svg"
             href="https://github.com/sxxxi"
           />
           <IconButton
