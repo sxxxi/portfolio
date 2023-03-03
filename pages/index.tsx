@@ -1,7 +1,7 @@
 import { StickyHeaderLayout } from '@/components/PageLayouts'
 import Link from 'next/link';
 import { ReactNode } from 'react';
-import { supabase } from './lib/supabaseClient';
+import { supabase } from '@/lib/supabaseClient';
 
 /**
  * NOTE TO SELF: a type cannot be re-opened to add new properties vs an interface which is always extendable
