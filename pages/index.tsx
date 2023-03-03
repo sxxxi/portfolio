@@ -1,60 +1,66 @@
-import { Inter } from '@next/font/google'
 import { StickyHeaderLayout } from '@/components/PageLayouts'
 import Link from 'next/link';
 import { ReactNode } from 'react';
+import { supabase } from './lib/supabaseClient';
 
-const skills = new Map<string, string[]>([
-  [
-    "Programming Languages",
-    ["Kotlin", "Java", "C/C#", "Rust", "Javascript/Typescript"],
-  ],
-  [
-    "Web Technologies",
-    ["React", "NextJS", "HTML/CSS", "MySQL", "ExpressJS", "Spring Boot"],
-  ],
-  [
-    "Systems Programming",
-    [
-      "Data Structures",
-      "Algorithmic thinking",
-      "Software Design Patterns",
-      "UNIX Processes",
-    ],
-  ],
-  ["Other", ["Android", "Unity"]],
-]);
+/**
+ * NOTE TO SELF: a type cannot be re-opened to add new properties vs an interface which is always extendable
+ * I use Supabase's database free hosting just so it gets easier for me to add entries to my portfolio 
+ * without having to restart my Vercel deployment. Still have lots of plans for this bad boy.
+ */
+export async function getServerSideProps() {
+  let skills = (await supabase.from('skills').select()).data;
+  let education = (await supabase.from('education').select()).data;
+  let projects = (await supabase.from('projects').select()).data;
 
+  return {
+    props: {
+      skills: skills,
+      education: education,
+      projects: projects
+    }
+  }
+}
 
+// Type declarations
+type SkillsByArea = {
+  skill_area: string,
+  skill_list: string[]
+}
 
+type EduInstitution = {
+  name: string,
+  course: string,
+  link: string,
+  start_date: Date,
+  end_date: string,
+}
 
-const projects = [
-  {
-    title: "Running pete",
-    description: "My game development project",
-    link: "https://sxxxi.itch.io/running_pete",
-    tech: ['C#', 'Unity']
-  },
-  {
-    title: "sushi-place-api",
-    description: "My attempt at utilizing ExpressJS and Typescript to create a simple restaurant order system.",
-    link: "https://github.com/sxxxi/sushi-place-api",
-    tech: ['Typescript', 'ExpressJs']
-  },
-];
+type Project = {
+  title: string;
+  description: string;
+  link: string;
+  tech: string[];
+};
 
-export default function Home() {
+interface HomeProps {
+  skills: SkillsByArea[],
+  education: EduInstitution[]
+  projects: Project[],
+}
+export default function Home({ skills, education, projects }: HomeProps) {
   return (
     <>
       <StickyHeaderLayout title={"Seiji Akakabe"}>
         <SkillsSection skills={skills} />
-        <EducationSection />
+        <EducationSection institutions={education}/>
         <ProjectsSection projects={projects} />
       </StickyHeaderLayout>
     </>
   );
 }
 
-type WordBeansProps = {
+interface WordBeansProps {
   words: string[]
 }
 const WordBeans = ({ words }: WordBeansProps) => {
@@ -67,7 +73,7 @@ const WordBeans = ({ words }: WordBeansProps) => {
   );
 }
 
-type LabeledChildrenProps = {
+interface LabeledChildrenProps {
   title: string,
   children: ReactNode
 }
@@ -89,49 +95,73 @@ const LabeledContent = ({ title, children }: LabeledChildrenProps) => {
   );
 }
 
+
+
 type SkillsSectionProps = {
-  skills: Map<string, string[]>
+  skills: SkillsByArea[]
 }
 const SkillsSection = ({ skills }: SkillsSectionProps) => {
   return (
     <PageSection title={'Skills'}>
-      {Array.from(skills).map(([key, val], si) => 
-        <LabeledContent title={key} key={si}>
-          <WordBeans words={val} />
+      {skills.map((area, areaIdx) => 
+        <LabeledContent title={area.skill_area} key={areaIdx}>
+          <WordBeans words={area.skill_list} />
         </LabeledContent>
       )}
     </PageSection>
   );
 }
 
-const EducationSection = () => {
+
+enum MonthList {
+  January = 1,
+  February,
+  March,
+  April,
+  May,
+  June,
+  July,
+  August,
+  September,
+  October,
+  November,
+  December,
+}
+
+interface EducationSectionProps {
+  institutions: EduInstitution[]
+}
+const EducationSection = ( { institutions }: EducationSectionProps) => {
   return (
     <PageSection title={"Education"}>
-      <LabeledContent title={"Sheridan College"}>
-        <div className="flex flex-row justify-between">
-          <span>Software Development and Network Engineering</span>
-          <span>2020 ~ 2023</span>
-        </div>
-      </LabeledContent>
+      {institutions.map((i, idx) => {
+        const startDate = new Date(i.start_date);
+        const endDate = new Date(i.end_date);
+
+        return <LabeledContent key={idx} title={i.name}>
+          <div className="flex flex-row justify-between">
+            <span>{i.course}</span>
+            <span>
+              {startDate.getFullYear()} ~ {endDate.getFullYear()}
+            </span>
+          </div>
+        </LabeledContent>
+      })}
     </PageSection>
   );
 }
 
-type Project = {
-  title: string,
-  description: string,
-  link: string,
-  tech: string[]
-}
+
+
 type ProjectsSectionProps = {
   projects: Project[]
 }
-const ProjectsSection = ({ projects }: ProjectsSectionProps) => {
+export const ProjectsSection = ({ projects }: ProjectsSectionProps) => {
   return (
     <PageSection title={"Projects"}>
       {projects.map((p, i) => {
         return(
-          <div key={i} className=" bg-white rounded-md relative drop-shadow-md hover:invert">
+          <div key={i} className=" bg-white rounded-md relative drop-shadow-md hover:bg-slate-300 transition-colors duration-75">
             <Link href={p.link} className="absolute w-full h-full" target='_blank'></Link> 
             <div className='p-4 flex flex-col'>
               <span className="text-xl font-semibold">{p.title}</span>
@@ -144,7 +174,6 @@ const ProjectsSection = ({ projects }: ProjectsSectionProps) => {
     </PageSection>
   );
 };
-
 
 
 
