@@ -1,0 +1,10 @@
+@media(min-width: 500px) {
+  .container {
+    padding: 56px;
+  }
+  .bodyContainer {
+    column-count: 2;
+  }
+}
+
+

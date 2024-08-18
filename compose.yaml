@@ -1,0 +1,23 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: rabbitmq
+    container_name: rabbitmq
+    ports:
+      - 15672:15672
+      - 5672:5672
+    environment:
+      - RABBITMQ_DEFAULT_USER=seiji
+      - RABBITMQ_DEFAULT_PASS=foobar
+      - RABBITMQ_DEFAULT_VHOST=/
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:15672"]
+      interval: 3s
+      timeout: 3s
+      retries: 1
+    networks:
+      - portfolio-net
+
+networks:
+  portfolio-net:
+    external: true

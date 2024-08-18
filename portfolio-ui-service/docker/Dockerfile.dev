@@ -1,0 +1,9 @@
+FROM oven/bun:latest AS base
+# FROM node:latest AS base
+WORKDIR /app
+COPY *.json .
+COPY .* .
+COPY *.ts .
+COPY *.mjs .
+RUN bun i
+ENTRYPOINT bun run dev

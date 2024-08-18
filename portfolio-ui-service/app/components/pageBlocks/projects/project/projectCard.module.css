@@ -1,0 +1,53 @@
+.glass {
+  background-color: #363636cc;
+  box-shadow: 2px 2px 8px rgba(1, 1, 1, 0.5 );
+  backdrop-filter: blur(var(--s));
+  -webkit-backdrop-filter: blur(var(--s));
+
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  border-radius: var(--xs);
+  overflow: hidden;
+  width: 100%;
+  padding: var(--m);
+  gap: var(--m);
+  max-width: 1000px;
+}
+
+.container .contents {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 70%;
+  padding: var(--l);
+  word-break: normal;
+}
+
+.container .images {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4/3;
+  width: 30%;
+  border-radius: var(--xs);
+}
+
+@media(max-width: 1200px) {
+  .container {
+    flex-direction: column-reverse;
+    align-items: center;
+
+  }
+  .container .contents {
+    width: 100%;
+    padding: var(--xs);
+  }
+  .container .images {
+    aspect-ratio: 3/1;
+    width: 100%;
+  }
+
+}
+

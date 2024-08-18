@@ -1,0 +1,103 @@
+:root {
+  --bg: #181819;
+  --primary: #f5ba00;  
+  --borderRadiusSmall: 8px;
+
+
+  --xxs:4px;
+  --xs: 8px;
+  --s: 16px;
+  --m: 24px;
+  --l: 32px;
+  --xl: 40px;
+  --2xl: 48px;
+  --3xl: 56px;
+  --4xl: 64px;
+
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+  }
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: var(--bg);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+h1 {
+  font-size: 4em;
+}
+
+h2 {
+  font-size: 3em;
+}
+
+h3 {
+  font-size: 2em;
+}
+
+h4 {
+  font-size: 1.6em;
+}
+
+h5 {
+  font-size: 1.3em;
+}
+
+h6 {
+  font-size: 1em;
+}
+
+p {
+  font-size: 1.2em;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+/* Page block globals */
+.pageBlockContainer {
+  padding: var(--s); 
+}
+
+@media screen and (min-width: 500px) {
+  .pageBlockContainer {
+    padding: var(--4xl) var(--3xl); 
+  }
+}
+
+input[type="button"], input[type="submit"] {
+  padding: var(--xs);
+  background-color: var(--primary);
+  color: var(--bg);
+  border: #FFFFFF00 solid 1px;
+  border-radius: var(--xxs);
+}
+
+input[type="button"]:hover, input[type="submit"]:hover {
+  background-color: var(--bg);
+  border: var(--primary) solid 1px;
+  color: var(--primary);
+}

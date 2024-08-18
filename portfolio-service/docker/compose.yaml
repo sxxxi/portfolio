@@ -1,0 +1,46 @@
+
+services:
+  dev-portfolio-service:
+    build: 
+      context: ..
+      dockerfile: docker/Dockerfile.dev
+    env_file:
+      - ../.env
+    ports:
+      - 3000:3000
+    volumes:
+      - ../src:/app/src
+    networks:
+      - portfolio-net
+
+  portfolio-service:
+    build: ..
+    env_file:
+      - ../.env
+    ports:
+      - 3000:3000
+    networks:
+      - portfolio-net
+
+  portfolio-pg:
+    image: postgres
+    hostname: pg
+    restart: always
+    shm_size: 128mb
+    ports: 
+      - 5432:5432
+    environment:
+      POSTGRES_USER: seiji
+      POSTGRES_PASSWORD: foobar
+      POSTGRES_DB: pfdb
+    volumes:
+      - type: tmpfs
+        target: /dev/shm
+        tmpfs:
+          size: 134217728 # 128*2^20 bytes = 128Mb
+    networks:
+      - portfolio-net
+
+networks:
+  portfolio-net:
+    external: true

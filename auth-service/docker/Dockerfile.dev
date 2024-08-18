@@ -1,0 +1,9 @@
+FROM oven/bun:latest AS base
+WORKDIR /app
+COPY *.json .
+RUN bun install
+
+FROM base as runner
+WORKDIR /app
+COPY --from=base /app/node_modules /app/node_modules
+ENTRYPOINT bunx nodemon

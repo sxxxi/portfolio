@@ -1,0 +1,29 @@
+
+services:
+  dev-ui-service:
+    build: 
+      context: ..
+      dockerfile: docker/Dockerfile.dev
+    env_file:
+      - ../.env
+    ports:
+      - 3000:3000
+    volumes:
+      - ../app:/app/app
+      - ../pages:/app/pages
+      - ../public:/app/public
+    networks:
+      - portfolio-net
+
+  ui-service:
+    build: docker/Dockerfile
+    env_file:
+      - ../.env
+    ports:
+      - 3000:3000
+    networks:
+      - portfolio-net
+
+networks:
+  portfolio-net:
+    external: true

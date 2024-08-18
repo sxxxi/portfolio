@@ -1,0 +1,41 @@
+.header {
+  color: red
+}
+
+/* .main {
+  padding: 0px 20%;
+
+} */
+
+
+/* Tablet and Smaller Desktop */
+@media (min-width: 701px) and (max-width: 1120px) {
+}
+
+@media (prefers-color-scheme: dark) {
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.sections .section {
+  width: 100%;
+}
+
+.sections .section .title {
+  color: var(--primary);
+}
