@@ -34,8 +34,14 @@ export async function createUser(username: string, hash: string) {
 }
 
 export async function authenticate(username: string, password: string): Promise<number | undefined> {
-  const {id, hash} = (await db.query("SELECT id, hash FROM auth.credentials WHERE username = $1;", [username])).rows[0];
+  const existingAccount = (await db.query("SELECT id, hash FROM auth.credentials WHERE username = $1;", [username])).rows[0];
+
+  if (!existingAccount) 
+    return undefined;
+
+  const {id, hash} = existingAccount;
   const isMatch = await Bun.password.verify(password, hash);
+
   if (isMatch) {
     return id
   } else {

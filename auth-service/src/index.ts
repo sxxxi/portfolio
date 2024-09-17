@@ -29,6 +29,7 @@ app.post('/login', async (req, res, next) => {
   });
 });
 
+
 app.get("/verify/:token", async (req, res, next) => {
   res.json({
     payload: await verify(req.params.token)
